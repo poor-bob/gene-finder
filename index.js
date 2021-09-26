@@ -42,7 +42,7 @@ async function gatherAxiesFromQuery(classes, breedCount, parts) {
                     })
                 }
             }).catch(err => {
-                // console.log("ERROR", resp);
+                console.log("ERROR", resp);
             })
         )
 
@@ -117,12 +117,12 @@ axies.forEach(function(axie){
         
                     if (hornsGood && mouthesGood && tailsGood && backsGood){
                         let price = (parseFloat(axiez.auction.currentPrice.slice(0, -14)) / 10000).toString();
-                        if (price <= 0.095)
+                        if (price <= 0.11)
                             console.log(axie.classes, axiez.id, price)
                     }
         
                 })
             });    
-        }, index / 3 + 1);
+        }, index * 250);
     })    
 });
