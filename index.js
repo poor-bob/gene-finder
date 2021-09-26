@@ -72,23 +72,26 @@ let axies = [
         mouthes: ["mouth-serious"],
         horns: ["horn-cactus", "horn-beech"],
         backs: ["back-pumpkin"],
-        breedCount: [0]
+        breedCount: [0],
+        price: 0.0975
     },
-    // {
-    //     classes: ["Beast"],
-    //     tails: ["tail-nut-cracker", "tail-rice", "tail-hare", "tail-cottaintail"],
-    //     mouthes: ["mouth-nut-cracker", "mouth-goda"],
-    //     horns: ["horn-dual-blade", "horn-imp"],
-    //     backs: ["back-risky-beast", "back-ronin"],
-    //     breedCount: [0]
-    // },
     {
-        classes: ["Beast"],
+        classes: ["Reptile", "Mech"],
+        tails: ["tail-thorny-caterpillar"],
+        mouthes: ["mouth-tiny-turtle"],
+        horns: ["horn-lagging"],
+        backs: ["back-snail-shell"],
+        breedCount: [0],
+        price: 0.14
+    },
+    {
+        classes: ["Beast", "Mech"],
         tails: ["tail-nut-cracker", "tail-cottontail", "tail-hare"],
         mouthes: ["mouth-nut-cracker", "mouth-goda"],
         horns: ["horn-dual-blade", "horn-imp"],
         backs: ["back-risky-beast", "back-ronin"],
-        breedCount: [0]
+        breedCount: [0],
+        price: 0.092
     }
 
 ]
@@ -117,7 +120,7 @@ axies.forEach(function(axie){
         
                     if (hornsGood && mouthesGood && tailsGood && backsGood){
                         let price = (parseFloat(axiez.auction.currentPrice.slice(0, -14)) / 10000).toString();
-                        if (price <= 0.11)
+                        if (price <= axie.price)
                             console.log(axie.classes, axiez.id, price)
                     }
         
