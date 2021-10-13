@@ -68,12 +68,21 @@ function createAllCombinations(tails, mouthes, horns, backs){
 let axies = [
     {
         classes: ["Plant"],
-        tails: ["tail-carrot", "tail-hot-butt", "tail-cattail", "tail-yam"],
+        tails: ["tail-carrot", "tail-hot-butt", "tail-yam"],
         mouthes: ["mouth-serious"],
         horns: ["horn-cactus", "horn-beech"],
         backs: ["back-pumpkin"],
-        breedCount: [0],
-        price: 0.0975
+        breedCount: [0, 7],
+        constraints: [
+            // {
+            //     price: 0.092,
+            //     score: .96
+            // },
+            {
+                price: 0.07,
+                score: .50
+            }
+        ],
     },
     {
         classes: ["Reptile", "Mech"],
@@ -81,17 +90,52 @@ let axies = [
         mouthes: ["mouth-tiny-turtle"],
         horns: ["horn-lagging"],
         backs: ["back-snail-shell"],
-        breedCount: [0],
-        price: 0.14
+        breedCount: [0, 7],
+        constraints: [
+            {
+                price: .0675,
+                score: .53
+            },
+            // {
+            //     price: .085,
+            //     score: .875
+            // },
+            // {
+            //     price: .09,
+            //     score: .9
+            // },
+            // {
+            //     price: .01,
+            //     score: .95
+            // }
+        ],
     },
     {
         classes: ["Beast", "Mech"],
-        tails: ["tail-nut-cracker", "tail-cottontail", "tail-hare"],
-        mouthes: ["mouth-nut-cracker", "mouth-goda"],
+        tails: ["tail-nut-cracker",  "tail-hare"],
+        mouthes: ["mouth-nut-cracker"],
         horns: ["horn-dual-blade", "horn-imp"],
         backs: ["back-risky-beast", "back-ronin"],
-        breedCount: [0],
-        price: 0.092
+        breedCount: [0, 7],
+        constraints: [
+            {
+                price: .0475,
+                score: .50
+            },
+            // {
+            //     price: .085,
+            //     score: .875
+            // },
+            // {
+            //     price: .09,
+            //     score: .9
+            // },
+            {
+                price: .06,
+                score: .50
+            }
+
+        ],
     }
 
 ]
@@ -104,28 +148,67 @@ axies.forEach(function(axie){
                     const genes = new AxieGene(axiez.genes)
         
                     let hornsGood = mouthesGood = tailsGood = backsGood = false;
-        
-                    if (axie.horns.indexOf((genes.horn.d.partId)) > -1 && axie.horns.indexOf((genes.horn.r1.partId)) > -1 && axie.horns.indexOf((genes.horn.r2.partId)) > -1) {
+                    let hornsr1 = mouthesr1 = tailsr1 = backsr1 = false;
+                    let hornsr2 = mouthesr2 = tailsr2 = backsr2 = false;
+
+                    if (axie.horns.indexOf((genes.horn.d.partId)) > -1){
                         hornsGood = true;
                     }
-                    if (axie.tails.indexOf((genes.tail.d.partId)) > -1 && axie.tails.indexOf((genes.tail.r1.partId)) > -1 && axie.tails.indexOf((genes.tail.r2.partId)) > -1) {
+        
+                    if (axie.horns.indexOf((genes.horn.r1.partId)) > -1) {
+                        hornsr1 = true;
+                    }
+                    if (axie.horns.indexOf((genes.horn.r2.partId)) > -1) {
+                        hornsr2 = true;
+                    }
+
+                    if (axie.tails.indexOf((genes.tail.d.partId)) > -1){
                         tailsGood = true;
                     }
-                    if (axie.backs.indexOf((genes.back.d.partId)) > -1 && axie.backs.indexOf((genes.back.r1.partId)) > -1 && axie.backs.indexOf((genes.back.r2.partId)) > -1) {
+        
+                    if (axie.tails.indexOf((genes.tail.r1.partId)) > -1) {
+                        tailsr1 = true;
+                    }
+                    if (axie.tails.indexOf((genes.tail.r2.partId)) > -1) {
+                        tailsr2 = true;
+                    }
+
+                    if (axie.backs.indexOf((genes.back.d.partId)) > -1){
                         backsGood = true;
                     }
-                    if (axie.mouthes.indexOf((genes.mouth.d.partId)) > -1 && axie.mouthes.indexOf((genes.mouth.r1.partId)) > -1 && axie.mouthes.indexOf((genes.mouth.r2.partId)) > -1) {
+        
+                    if (axie.backs.indexOf((genes.back.r1.partId)) > -1) {
+                        backsr1 = true;
+                    }
+                    if (axie.backs.indexOf((genes.back.r2.partId)) > -1) {
+                        backsr2 = true;
+                    }
+                    if (axie.mouthes.indexOf((genes.mouth.d.partId)) > -1){
                         mouthesGood = true;
                     }
         
-                    if (hornsGood && mouthesGood && tailsGood && backsGood){
-                        let price = (parseFloat(axiez.auction.currentPrice.slice(0, -14)) / 10000).toString();
-                        if (price <= axie.price)
-                            console.log(axie.classes, axiez.id, price)
+                    if (axie.mouthes.indexOf((genes.mouth.r1.partId)) > -1) {
+                        mouthesr1 = true;
                     }
+                    if (axie.mouthes.indexOf((genes.mouth.r2.partId)) > -1) {
+                        mouthesr2 = true;
+                    }
+
+                    let mouthScore = (mouthesr2 ? .0625 : 0) + (mouthesr1 ? 0.1875 : 0) + (mouthesGood ? 0.75 : 0)
+                    let tailScore = (tailsr2 ? .0625 : 0) + (tailsr1 ? 0.1875 : 0) + (tailsGood ? 0.75 : 0)
+                    let backScore = (backsr2 ? .0625 : 0) + (backsr1 ? 0.1875 : 0) + (backsGood ? 0.75 : 0)
+                    let hornScore = (hornsr2 ? .0625 : 0) + (hornsr1 ? 0.1875 : 0) + (hornsGood ? 0.75 : 0)
+
+                    let score = ( mouthScore + tailScore + backScore + hornScore ) / 4;
         
+                    axie.constraints.forEach((constraint) => {
+                        let price = (parseFloat(axiez.auction.currentPrice.slice(0, -14)) / 10000).toString();
+
+                        if (score >= constraint.score && price <= constraint.price)
+                            console.log(score * 100 + "%", axie.classes, axiez.id, price)
+                    })        
                 })
             });    
-        }, index * 250);
+        }, index * 1250);
     })    
 });
